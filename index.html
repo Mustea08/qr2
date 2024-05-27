@@ -129,67 +129,56 @@
   <title>App Redirect</title>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || "";
+      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || ""
       const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
       const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
       const appStoreURL = "https://apps.apple.com/ch/app/noury/id1577361582";
       const websiteURL = "https://www.noury.ch/app-herunterladen";
       const userAgent = navigator.userAgent;
-
       const isAndroid = () => /android/i.test(userAgent);
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-
       const openApp = () => {
-        const now = new Date().getTime();
-        let hidden = false;
-        window.location = appScheme;
-        
-        const checkIfHidden = () => {
-          if (document.hidden) {
-            hidden = true;
-          }
-        };
+        // window.location.href = appScheme;
+        let change = false;
 
-        document.addEventListener('visibilitychange', checkIfHidden);
-
-        if (isiOS()) {
-          const iFrame = document.createElement('iframe');
-          iFrame.style.border = 'none';
-          iFrame.style.width = '0';
-          iFrame.style.height = '0';
-          iFrame.style.visibility = 'hidden';
-          iFrame.style.position = 'absolute';
-          iFrame.src = appScheme;
-          document.body.appendChild(iFrame);
-
-          setTimeout(() => {
-            if (!hidden) {
+        setTimeout(() => {
+          if (!change) {
+            if (isiOS()) {
               window.location.href = appStoreURL;
+            } else if (isAndroid()) {
+              window.location.href = playStoreURL;
+            } else {
+              window.location.href = websiteURL;
             }
-          }, 2000); // 2000ms delay to account for the modal prompt
-        } else {
-          setTimeout(() => {
-            if (!hidden) {
-              if (isAndroid()) {
-                window.location.href = playStoreURL;
-              } else {
-                window.location.href = websiteURL;
-              }
-            }
-          }, 2000); // 2000ms delay for Android and other platforms
-        }
-      };
+          }
+        }, 15000)
+        window.location.href = appScheme;
+        window.onblur(() => change = true)
+        window.onfocus(() => change = false)
 
+
+
+
+        // setTimeout(() => {
+        //   if (isiOS()) {
+        //     window.location.href = appStoreURL;
+        //   } else if (isAndroid()) {
+        //     window.location.href = playStoreURL;
+        //   } else {
+        //     window.location.href = websiteURL;
+        //   }
+        // }, 500);
+
+      };
       openApp();
     });
   </script>
 </head>
 
 <body>
+
 </body>
 
 </html>
-
-
 
 
