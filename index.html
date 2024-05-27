@@ -64,7 +64,7 @@
 </html>
  -->
 
- <!DOCTYPE html>
+<!--  <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -118,4 +118,78 @@
 <body>
 </body>
 
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Redirect</title>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || "";
+      const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
+      const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
+      const appStoreURL = "https://apps.apple.com/ch/app/noury/id1577361582";
+      const websiteURL = "https://www.noury.ch/app-herunterladen";
+      const userAgent = navigator.userAgent;
+
+      const isAndroid = () => /android/i.test(userAgent);
+      const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+
+      const openApp = () => {
+        const now = new Date().getTime();
+        let hidden = false;
+
+        const checkIfHidden = () => {
+          if (document.hidden) {
+            hidden = true;
+          }
+        };
+
+        document.addEventListener('visibilitychange', checkIfHidden);
+
+        if (isiOS()) {
+          const iFrame = document.createElement('iframe');
+          iFrame.style.border = 'none';
+          iFrame.style.width = '0';
+          iFrame.style.height = '0';
+          iFrame.style.visibility = 'hidden';
+          iFrame.style.position = 'absolute';
+          iFrame.src = appScheme;
+          document.body.appendChild(iFrame);
+
+          setTimeout(() => {
+            if (!hidden) {
+              window.location.href = appStoreURL;
+            }
+          }, 2000); // 2000ms delay to account for the modal prompt
+        } else {
+          window.location = appScheme;
+          setTimeout(() => {
+            if (!hidden) {
+              if (isAndroid()) {
+                window.location.href = playStoreURL;
+              } else {
+                window.location.href = websiteURL;
+              }
+            }
+          }, 2000); // 2000ms delay for Android and other platforms
+        }
+      };
+
+      openApp();
+    });
+  </script>
+</head>
+
+<body>
+</body>
+
 </html>
+
+
+
+
