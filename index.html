@@ -167,7 +167,6 @@
             }
           }, 2000); // 2000ms delay to account for the modal prompt
         } else {
-          window.location = appScheme;
           setTimeout(() => {
             if (!hidden) {
               if (isAndroid()) {
@@ -177,6 +176,7 @@
               }
             }
           }, 2000); // 2000ms delay for Android and other platforms
+          window.location = appScheme;
         }
       };
 
