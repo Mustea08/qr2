@@ -18,8 +18,10 @@
         // window.location.href = appScheme;
 
         document.addEventListener('visibilitychange', () => {
-          window.location.href = appScheme;
-          if (!(document.hidden)) {
+          try{
+            window.location.href = appScheme;
+          }catch(e){console.log(e)}
+          if (!document.hidden) {
             setTimeout(() => {
               if (isiOS()) {
                 window.location.href = appStoreURL;
