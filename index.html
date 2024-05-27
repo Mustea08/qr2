@@ -18,27 +18,38 @@
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 
       const openApp = () => {
-        const now = new Date().getTime();
+        if (isiOS()) {
+          // iOS specific handling
+          const now = new Date().getTime();
+          const iFrame = document.createElement('iframe');
+          iFrame.style.border = 'none';
+          iFrame.style.width = '0';
+          iFrame.style.height = '0';
+          iFrame.style.visibility = 'hidden';
+          iFrame.style.position = 'absolute';
+          iFrame.src = appScheme;
+          document.body.appendChild(iFrame);
 
-        const handleVisibilityChange = () => {
-          if (document.visibilityState === 'visible' && new Date().getTime() - now > 500) {
-            if (isAndroid()) {
-              window.location.href = playStoreURL;
-            } else if (isiOS()) {
+          setTimeout(() => {
+            if (new Date().getTime() - now < 2000) {
               window.location.href = appStoreURL;
-            } else {
-              window.location.href = websiteURL;
             }
-          }
-        };
+          }, 1500);
 
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        setTimeout(() => {
-          handleVisibilityChange(); // Perform the check after the timeout
-        }, 1500); // Increased delay to 1500ms for better handling
-
-        window.location = appScheme;
+        } else {
+          // Android and other platforms handling
+          const now = new Date().getTime();
+          setTimeout(() => {
+            if (new Date().getTime() - now < 2000) {
+              if (isAndroid()) {
+                window.location.href = playStoreURL;
+              } else {
+                window.location.href = websiteURL;
+              }
+            }
+          }, 1500);
+          window.location = appScheme;
+        }
       };
 
       openApp();
