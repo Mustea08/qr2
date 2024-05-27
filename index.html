@@ -142,7 +142,8 @@
       const openApp = () => {
         const now = new Date().getTime();
         let hidden = false;
-
+        window.location = appScheme;
+        
         const checkIfHidden = () => {
           if (document.hidden) {
             hidden = true;
@@ -177,7 +178,6 @@
             }
           }, 2000); // 2000ms delay for Android and other platforms
         }
-          window.location = appScheme;
       };
 
       openApp();
