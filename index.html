@@ -16,21 +16,23 @@
       const isAndroid = () => /android/i.test(userAgent);
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
       const openApp = () => {
-        // window.location.href = appScheme;
-        let change = false;
 
 
         window.location.href = appScheme;
-        window.onblur(() => setTimeout(() => {
-          if (isiOS()) {
-            window.location.href = appStoreURL;
-          } else if (isAndroid()) {
-            window.location.href = playStoreURL;
-          } else {
-            window.location.href = websiteURL;
-          }
-        }, 15000))
-        
+        let openStore = false;
+
+
+
+
+        // setTimeout(() => {
+        //   if (isiOS()) {
+        //     window.location.href = appStoreURL;
+        //   }
+        //   if (isAndroid()) {
+        //     window.location.href = playStoreURL;
+        //   }
+        // }, 5000)
+
         // window.onfocus(() => change = false)
 
 
@@ -49,11 +51,21 @@
       };
       openApp();
     });
+
+    const div = document.getElementById('container')
+
+    setInterval(() => {
+      const p = document.createElement('p')
+      p.innerText = "test"
+      div.appendChild(p)
+
+    }, 5000)
   </script>
 </head>
 
 <body>
-
+  <p>text here</p>
+  <div id="container"></div>
 </body>
 
 </html>
