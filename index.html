@@ -15,11 +15,10 @@
       const userAgent = navigator.userAgent;
       const isAndroid = () => /android/i.test(userAgent);
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-      const openApp = () => {
         // window.location.href = appScheme;
 
         document.addEventListener('visibilitychange', () => {
-          if (!(document.visibilityState === 'hidden')) {
+          if (!(document.hidden)) {
             setTimeout(() => {
               if (isiOS()) {
                 window.location.href = appStoreURL;
@@ -42,8 +41,6 @@
         //   }
         // }, 500);
         window.location.href = appScheme;
-      };
-      openApp();
     });
   </script>
 </head>
