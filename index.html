@@ -7,51 +7,46 @@
   <title>App Redirect</title>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || ""
+      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || "";
       const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
       const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
       const appStoreURL = "https://apps.apple.com/ch/app/noury/id1577361582";
       const websiteURL = "https://www.noury.ch/app-herunterladen";
       const userAgent = navigator.userAgent;
+
       const isAndroid = () => /android/i.test(userAgent);
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+
       const openApp = () => {
-        // window.location.href = appScheme;
+        const now = new Date().getTime();
 
-
-        console.log('helllo')
-
-        setTimeout(() => {
-          if (document.visibilityState === "visible") {
-            if (isiOS()) {
-              window.location.href = appStoreURL;
-            } else if (isAndroid()) {
+        const handleVisibilityChange = () => {
+          if (document.visibilityState === 'visible' && new Date().getTime() - now > 500) {
+            if (isAndroid()) {
               window.location.href = playStoreURL;
+            } else if (isiOS()) {
+              window.location.href = appStoreURL;
             } else {
               window.location.href = websiteURL;
             }
-          } else {
-            window.location.href = appScheme;
           }
-        }, 1500)
+        };
 
-        window.location.href = appScheme;
+        document.addEventListener('visibilitychange', handleVisibilityChange);
 
+        setTimeout(() => {
+          handleVisibilityChange(); // Perform the check after the timeout
+        }, 1500); // Increased delay to 1500ms for better handling
 
-        // setTimeout(() => {
-        //   if (isiOS()) {
-        //     window.location.href = appStoreURL;
-        //   } else if (isAndroid()) {
-        //     window.location.href = playStoreURL;
-        //   } else {
-        //     window.location.href = websiteURL;
-        //   }
-        // }, 500);
-
+        window.location = appScheme;
       };
+
       openApp();
     });
   </script>
 </head>
+
+<body>
+</body>
 
 </html>
