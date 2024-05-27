@@ -15,24 +15,26 @@
       const userAgent = navigator.userAgent;
       const isAndroid = () => /android/i.test(userAgent);
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+      const openApp = () => {
         // window.location.href = appScheme;
 
-        document.addEventListener('visibilitychange', () => {
-          try{
-            window.location.href = appScheme;
-          }catch(e){console.log(e)}
-          if (!document.hidden) {
-            setTimeout(() => {
-              if (isiOS()) {
-                window.location.href = appStoreURL;
-              } else if (isAndroid()) {
-                window.location.href = playStoreURL;
-              } else {
-                window.location.href = websiteURL;
-              }
-            }, 500);
+
+        console.log('helllo')
+
+        setTimeout(() => {
+          if (document.visibilityState === "visible") {
+            if (isiOS()) {
+              window.location.href = appStoreURL;
+            } else if (isAndroid()) {
+              window.location.href = playStoreURL;
+            } else {
+              window.location.href = websiteURL;
+            }
           }
-        })
+        }, 1500)
+
+        window.location.href = appScheme;
+
 
         // setTimeout(() => {
         //   if (isiOS()) {
@@ -43,7 +45,9 @@
         //     window.location.href = websiteURL;
         //   }
         // }, 500);
-        
+
+      };
+      openApp();
     });
   </script>
 </head>
