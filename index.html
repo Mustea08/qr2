@@ -1,125 +1,3 @@
-<!--  <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>App Redirect</title>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || ""
-      const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
-      const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
-      const appStoreURL = "https://apps.apple.com/ch/app/noury/id1577361582";
-      const websiteURL = "https://www.noury.ch/app-herunterladen";
-      const userAgent = navigator.userAgent;
-      const isAndroid = () => /android/i.test(userAgent);
-      const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-      const openApp = () => {
-        // window.location.href = appScheme;
-        let change = false;
-
-        setTimeout(() => {
-          if (!change) {
-            if (isiOS()) {
-              window.location.href = appStoreURL;
-            } else if (isAndroid()) {
-              window.location.href = playStoreURL;
-            } else {
-              window.location.href = websiteURL;
-            }
-          }
-        }, 1500)
-        window.location.href = appScheme;
-        window.onblur = function () {
-          change = true;
-        };
-        window.onfocus = function(){
-            change = false;
-        }
-
-
-
-
-        // setTimeout(() => {
-        //   if (isiOS()) {
-        //     window.location.href = appStoreURL;
-        //   } else if (isAndroid()) {
-        //     window.location.href = playStoreURL;
-        //   } else {
-        //     window.location.href = websiteURL;
-        //   }
-        // }, 500);
-
-      };
-      openApp();
-    });
-  </script>
-</head>
-
-<body>
-
-</body>
-
-</html>
- -->
-
-<!--  <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>App Redirect</title>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || "";
-      const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
-      const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
-      const appStoreURL = "https://apps.apple.com/ch/app/noury/id1577361582";
-      const websiteURL = "https://www.noury.ch/app-herunterladen";
-      const userAgent = navigator.userAgent;
-
-      const isAndroid = () => /android/i.test(userAgent);
-      const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-
-      const openApp = () => {
-        const now = new Date().getTime();
-        let hasNavigated = false;
-
-        const handleVisibilityChange = () => {
-          if (document.hidden) {
-            hasNavigated = true;
-          }
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        setTimeout(() => {
-          if (!hasNavigated) {
-            if (isAndroid()) {
-              window.location.href = playStoreURL;
-            } else if (isiOS()) {
-              window.location.href = appStoreURL;
-            } else {
-              window.location.href = websiteURL;
-            }
-          }
-        }, 2000); // 2000ms delay to account for the modal prompt
-
-        window.location = appScheme;
-      };
-
-      openApp();
-    });
-  </script>
-</head>
-
-<body>
-</body>
-
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -141,20 +19,19 @@
         // window.location.href = appScheme;
         let change = false;
 
-        setTimeout(() => {
-          if (!change) {
-            if (isiOS()) {
-              window.location.href = appStoreURL;
-            } if (isAndroid()) {
-              window.location.href = playStoreURL;
-            } else {
-              window.location.href = websiteURL;
-            }
-          }
-        }, 15000)
+
         window.location.href = appScheme;
-        window.onblur(() => change = true)
-        window.onfocus(() => change = false)
+        window.onblur(() => setTimeout(() => {
+          if (isiOS()) {
+            window.location.href = appStoreURL;
+          } else if (isAndroid()) {
+            window.location.href = playStoreURL;
+          } else {
+            window.location.href = websiteURL;
+          }
+        }, 15000))
+        
+        // window.onfocus(() => change = false)
 
 
 
@@ -180,5 +57,3 @@
 </body>
 
 </html>
-
-
