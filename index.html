@@ -34,9 +34,11 @@
 
         if (window.location.href !== appScheme) {
           // Handle redirection error here
-          setTimeout(() => {
+           setTimeout(() => {
             if (isiOS()) {
-              window.location.href = appStoreURL;
+              setTimeout(() => {
+                window.location.href = appStoreURL;
+              }, 1000)
             }
             else if (isAndroid()) {
               window.location.href = playStoreURL;
