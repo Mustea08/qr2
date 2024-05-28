@@ -3,15 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-itunes-app" content="app-id=1577361582, app-argument=scan://splash">
-  <title>App Redirect</title>
-
-</head>
-
-<body>
-  <div id="container"></div>
-  <script>
+    <script>
     document.addEventListener("DOMContentLoaded", () => {
       const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || ""
       const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
@@ -77,16 +69,15 @@
       };
       openApp();
     });
-
-    // const div = document.getElementById('container')
-
-    // setInterval(() => {
-    //   const p = document.createElement('p')
-    //   p.innerText = "test"
-    //   div.appendChild(p)
-
-    // }, 5000)
   </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-itunes-app" content="app-id=1577361582, app-argument=scan://splash">
+  <title>App Redirect</title>
+
+</head>
+
+<body>
+
 </body>
 
 </html>
