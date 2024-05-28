@@ -5,6 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>App Redirect</title>
+
+</head>
+
+<body>
+  <p>text here</p>
+  <div id="container"></div>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || ""
@@ -18,54 +24,69 @@
       const openApp = () => {
 
 
-        // window.location.href = appScheme;
-        let openStore = false;
+
+        try {
+          window.location.href = appScheme;
+        } catch (error) {
+          console.log("failed")
+          window.location.href = websiteURL;
+        }
+
+        if (window.location.href !== appScheme) {
+          // Handle redirection error here
+          setTimeout(() => {
+            if (isiOS()) {
+              window.location.href = appStoreURL;
+            }
+            else if (isAndroid()) {
+              window.location.href = playStoreURL;
+            } else {
+              window.location.href = websiteURL
+            }
+          }, 1500)
+
+          let openStore = false;
 
 
 
 
-        // setTimeout(() => {
-        //   if (isiOS()) {
-        //     window.location.href = appStoreURL;
-        //   }
-        //   if (isAndroid()) {
-        //     window.location.href = playStoreURL;
-        //   }
-        // }, 5000)
+          // setTimeout(() => {
+          //   if (isiOS()) {
+          //     window.location.href = appStoreURL;
+          //   }
+          //   if (isAndroid()) {
+          //     window.location.href = playStoreURL;
+          //   }
+          // }, 5000)
 
-        // window.onfocus(() => change = false)
-
-
+          // window.onfocus(() => change = false)
 
 
-        // setTimeout(() => {
-        //   if (isiOS()) {
-        //     window.location.href = appStoreURL;
-        //   } else if (isAndroid()) {
-        //     window.location.href = playStoreURL;
-        //   } else {
-        //     window.location.href = websiteURL;
-        //   }
-        // }, 500);
 
+
+          // setTimeout(() => {
+          //   if (isiOS()) {
+          //     window.location.href = appStoreURL;
+          //   } else if (isAndroid()) {
+          //     window.location.href = playStoreURL;
+          //   } else {
+          //     window.location.href = websiteURL;
+          //   }
+          // }, 500);
+        }
       };
       openApp();
     });
 
     const div = document.getElementById('container')
 
-    setInterval(() => {
-      const p = document.createElement('p')
-      p.innerText = "test"
-      div.appendChild(p)
+    // setInterval(() => {
+    //   const p = document.createElement('p')
+    //   p.innerText = "test"
+    //   div.appendChild(p)
 
-    }, 5000)
+    // }, 5000)
   </script>
-</head>
-
-<body>
-  <p>text here</p>
-  <div id="container"></div>
 </body>
 
 </html>
