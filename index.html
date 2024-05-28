@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-itunes-app" content="app-id=1577361582, app-argument=scan://splash">
   <title>App Redirect</title>
 
 </head>
@@ -35,12 +36,13 @@
         if (window.location.href !== appScheme) {
           // Handle redirection error here
            setTimeout(() => {
-            if (isiOS()) {
-              setTimeout(() => {
-                window.location.href = appStoreURL;
-              }, 1000)
-            }
-            else if (isAndroid()) {
+            // if (isiOS()) {
+            //   setTimeout(() => {
+            //     window.location.href = appStoreURL;
+            //   }, 1000)
+            // }
+            // else
+             if (isAndroid()) {
               window.location.href = playStoreURL;
             } else {
               window.location.href = websiteURL
