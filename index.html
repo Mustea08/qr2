@@ -20,21 +20,22 @@
       const openApp = () => {
         try {
           console.log('enterd:')
-          window.location.assign(appScheme);
+          window.location.host(appScheme);
           console.log("after");
         } catch (error) {
-          console.log('now it is not working', ' ', error)
+          console.log('now it is not working', ' ', error);
+          setTimeout(() => {
+            if (isiOS()) {
+              window.location.href = appStoreURL;
+            } else if (isAndroid()) {
+              window.location.href = playStoreURL;
+            } else {
+              console.log('heelool');
+              window.location.href = websiteURL;
+            }
+          }, 3000); // Increased timeout to handle user interaction delay
         };
-        setTimeout(() => {
-          if (isiOS()) {
-            window.location.href = appStoreURL;
-          } else if (isAndroid()) {
-            window.location.href = playStoreURL;
-          } else {
-            console.log('heelool');
-            window.location.href = websiteURL;
-          }
-        }, 3000); // Increased timeout to handle user interaction delay
+
       }
 
       openApp();
