@@ -1,83 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-    <script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-itunes-app" content="app-id=1577361582, app-argument=scan://splash">
+  <title>Noury App</title>
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || ""
+      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || "";
       const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
       const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
       const appStoreURL = "https://apps.apple.com/ch/app/noury/id1577361582";
       const websiteURL = "https://www.noury.ch/app-herunterladen";
       const userAgent = navigator.userAgent;
+
       const isAndroid = () => /android/i.test(userAgent);
-      const isiOS = () => /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+      const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
+
       const openApp = () => {
-
-
-
-        try {
-          window.location.href = appScheme;
-        } catch (error) {
-          console.log("failed")
-          window.location.href = websiteURL;
-        }
-
-        if (window.location.href !== appScheme) {
-          // Handle redirection error here
-           setTimeout(() => {
-            if (isiOS()) {
-              window.location.href
-            }
-            else if (isAndroid()) {
-              window.location.href = playStoreURL;
-            } else {
-              window.location.href = websiteURL
-            }
-          }, 1500)
-
-          let openStore = false;
-
-
-
-
-          // setTimeout(() => {
-          //   if (isiOS()) {
-          //     window.location.href = appStoreURL;
-          //   }
-          //   if (isAndroid()) {
-          //     window.location.href = playStoreURL;
-          //   }
-          // }, 5000)
-
-          // window.onfocus(() => change = false)
-
-
-
-
-          // setTimeout(() => {
-          //   if (isiOS()) {
-          //     window.location.href = appStoreURL;
-          //   } else if (isAndroid()) {
-          //     window.location.href = playStoreURL;
-          //   } else {
-          //     window.location.href = websiteURL;
-          //   }
-          // }, 500);
-        }
+        window.location.href = appScheme;
+        setTimeout(() => {
+          if (isiOS()) {
+            window.location.href = appStoreURL;
+          } else if (isAndroid()) {
+            window.location.href = playStoreURL;
+          } else {
+            window.location.href = websiteURL;
+          }
+        }, 1500);
       };
+
       openApp();
     });
   </script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-itunes-app" content="app-id=1577361582, app-argument=scan://splash">
-  <title>App Redirect</title>
-
 </head>
-
 <body>
-
 </body>
-
 </html>
