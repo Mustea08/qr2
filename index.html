@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,38 +18,35 @@
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
 
       const openApp = () => {
-        // Attempt to open the app scheme
-        window.location.href = appScheme;
+        try {
+          console.log('enterd:')
+          window.location.ancestorOrigins(appScheme);
+          console.log("after");
+        } catch (error) {
+          console.log('now it is not working', ' ', error)
+          setTimeout(() => {
+            if (isiOS()) {
+              window.location.href = appStoreURL;
+            } else if (isAndroid()) {
+              window.location.href = playStoreURL;
+            } else {
+              console.log('heelool');
+              window.location.href = websiteURL;
+            }
+          }, 3000); // Increased timeout to handle user interaction delay
+        };
+      }
 
-        // Set a longer timeout to redirect to the app store or website if the app is not installed
-        setTimeout(() => {
-          if (isiOS()) {
-            window.location.href = appStoreURL;
-          } else if (isAndroid()) {
-            window.location.href = playStoreURL;
-          } else {
-            window.location.href = websiteURL;
-          }
-        }, 3000); // Increased timeout to handle user interaction delay
-      };
-
-      // Manipulate history to reduce the likelihood of navigating back to this page
-      history.replaceState(null, null, window.location.href);
-      history.pushState(null, null, window.location.href);
-
-      // Open the app
       openApp();
-
-      // Popstate event to handle the back button
-      window.addEventListener('popstate', () => {
-        history.pushState(null, null, window.location.href);
-      });
     });
   </script>
 </head>
+
 <body>
 </body>
+
 </html>
+
 
 
 
