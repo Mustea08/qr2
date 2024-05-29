@@ -7,38 +7,48 @@
   <title>Noury App</title>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || "";
-      const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
-      const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
-      const appStoreURL = "itms-apps://apps.apple.com/ch/app/noury/id1577361582";
-      const websiteURL = "https://www.noury.ch/app-herunterladen";
-      const userAgent = navigator.userAgent;
+  const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || "";
+  const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
+  const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
+  const appStoreURL = "https://apps.apple.com/ch/app/noury/id1577361582";
+  const websiteURL = "https://www.noury.ch/app-herunterladen";
+  const userAgent = navigator.userAgent;
 
-      const isAndroid = () => /android/i.test(userAgent);
-      const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
+  const isAndroid = () => /android/i.test(userAgent);
+  const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
 
-      let fallbackTimeout;
+  let fallbackTimeout;
 
-      const openApp = () => {
-        window.location.href = appScheme;
+  const openApp = () => {
+    window.location.href = appScheme;
 
-        fallbackTimeout = setTimeout(() => {
-          if (isiOS()) {
-            window.location.replace(appStoreURL);
-          } else if (isAndroid()) {
-            window.location.replace(playStoreURL);
-          } else {
-            window.location.replace(websiteURL);
-          }
-        }, 2000);
-      };
+    fallbackTimeout = setTimeout(() => {
+      if (isiOS()) {
+        // Check if the Noury app is installed
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = appScheme;
+        document.body.appendChild(iframe);
 
-      window.addEventListener('pagehide', () => {
-        clearTimeout(fallbackTimeout);
-      });
+        // Wait for a short time to see if the app opens
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+          window.location.replace(appStoreURL);
+        }, 500);
+      } else if (isAndroid()) {
+        window.location.replace(playStoreURL);
+      } else {
+        window.location.replace(websiteURL);
+      }
+    }, 1000);
+  };
 
-      openApp();
-    });
+  window.addEventListener('focusout', () => {
+    clearTimeout(fallbackTimeout);
+  });
+
+  openApp();
+});
   </script>
 </head>
 
