@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-itunes-app" content="app-id=1577361582, app-argument=scan://splash">
   <title>Noury App</title>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -16,19 +15,28 @@
 
       const isAndroid = () => /android/i.test(userAgent);
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
+      let hasAppOpened = false;
 
       const openApp = () => {
         window.location.href = appScheme;
+
         setTimeout(() => {
-          if (isiOS()) {
-            window.location.href = appStoreURL;
-          } else if (isAndroid()) {
-            window.location.href = playStoreURL;
-          } else {
-            window.location.href = websiteURL;
+          if (!hasAppOpened) {
+            if (isiOS()) {
+              window.location.href = appStoreURL;
+            } else if (isAndroid()) {
+              window.location.href = playStoreURL;
+            } else {
+              window.location.href = websiteURL;
+            }
           }
-        }, 1500);
+        }, 2500);
       };
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          hasAppOpened = true;
+        }
+      });
 
       openApp();
     });
