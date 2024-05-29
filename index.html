@@ -9,7 +9,7 @@
       const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || "";
       const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
       const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
-      const appStoreURL = "itms-apps://apps.apple.com/ch/app/noury/id1577361582";
+      const appStoreURL = "itms-apps://apps.apple.com/ch/app/noury/id1577361582;
       const websiteURL = "https://www.noury.ch/app-herunterladen";
       const userAgent = navigator.userAgent;
 
@@ -17,40 +17,32 @@
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
 
       const openApp = () => {
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = appScheme;
-        document.body.appendChild(iframe);
+        // Attempt to open the app scheme
+        window.location.href = appScheme;
 
+        // Set a longer timeout to redirect to the app store or website if the app is not installed
         setTimeout(() => {
-          if (!sessionStorage.getItem('appOpened')) {
-            if (isiOS()) {
-              window.location.href = appStoreURL;
-            } else if (isAndroid()) {
-              window.location.href = playStoreURL;
-            } else {
-              window.location.href = websiteURL;
-            }
+          if (isiOS()) {
+            window.location.href = appStoreURL;
+          } else if (isAndroid()) {
+            window.location.href = playStoreURL;
+          } else {
+            window.location.href = websiteURL;
           }
-        }, 1500);
+        }, 3000); // Increased timeout to handle user interaction delay
       };
 
-      // Listen for visibility change events
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          sessionStorage.setItem('appOpened', 'true');
-        }
-      });
+      // Manipulate history to reduce the likelihood of navigating back to this page
+      history.replaceState(null, null, window.location.href);
+      history.pushState(null, null, window.location.href);
 
-      // Listen for user interaction
-      document.addEventListener('click', () => {
-        clearTimeout(fallbackTimeout);
-      });
+      // Open the app
+      openApp();
 
-      // Check if the app was already opened
-      if (!sessionStorage.getItem('appOpened')) {
-        openApp();
-      }
+      // Popstate event to handle the back button
+      window.addEventListener('popstate', () => {
+        history.pushState(null, null, window.location.href);
+      });
     });
   </script>
 </head>
