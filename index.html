@@ -17,26 +17,25 @@
       const isAndroid = () => /android/i.test(userAgent);
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
 
-      const openApp = () => {
-        try {
-          console.log('enterd:')
-          window.location.host(appScheme);
-          console.log("after");
-        } catch (error) {
-          console.log('now it is not working', ' ', error);
-          setTimeout(() => {
-            if (isiOS()) {
-              window.location.href = appStoreURL;
-            } else if (isAndroid()) {
-              window.location.href = playStoreURL;
-            } else {
-              console.log('heelool');
-              window.location.href = websiteURL;
-            }
-          }, 3000); // Increased timeout to handle user interaction delay
-        };
+      let fallbackTimeout;
 
-      }
+      const openApp = () => {
+        window.location.href = appScheme;
+
+        fallbackTimeout = setTimeout(() => {
+          if (isiOS()) {
+            window.location.replace(appStoreURL);
+          } else if (isAndroid()) {
+            window.location.replace(playStoreURL);
+          } else {
+            window.location.replace(websiteURL);
+          }
+        }, 2000);
+      };
+
+      window.addEventListener('pagehide', () => {
+        clearTimeout(fallbackTimeout);
+      });
 
       openApp();
     });
