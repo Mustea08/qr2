@@ -1,5 +1,5 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,40 +16,48 @@
       const isAndroid = () => /android/i.test(userAgent);
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
 
-      let hasAppOpened = false;
-
       const openApp = () => {
-        try {
-          window.location.href = appScheme;
-        } catch {
-          setTimeout(() => {
-            if (!hasAppOpened) {
-              if (isiOS()) {
-                window.location.href = appStoreURL;
-              } else if (isAndroid()) {
-                window.location.href = playStoreURL;
-              } else {
-                window.location.href = websiteURL;
-              }
-            }
-          }, 1500);
-        };
-      }
-      openApp();
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = appScheme;
+        document.body.appendChild(iframe);
 
+        setTimeout(() => {
+          if (!sessionStorage.getItem('appOpened')) {
+            if (isiOS()) {
+              window.location.href = appStoreURL;
+            } else if (isAndroid()) {
+              window.location.href = playStoreURL;
+            } else {
+              window.location.href = websiteURL;
+            }
+          }
+        }, 500);
+      };
+
+      // Listen for visibility change events
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-          hasAppOpened = true;
+          sessionStorage.setItem('appOpened', 'true');
         }
       });
+
+      // Listen for user interaction
+      document.addEventListener('click', () => {
+        clearTimeout(fallbackTimeout);
+      });
+
+      // Check if the app was already opened
+      if (!sessionStorage.getItem('appOpened')) {
+        openApp();
+      }
     });
   </script>
 </head>
-
 <body>
 </body>
-
 </html>
+
 
 
 
