@@ -1,5 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noury App</title>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const cabinet_id = new URLSearchParams(window.location.search).get('cabinet_id') || "";
+      const appScheme = `scan://splash/cabinet_id=${cabinet_id}`;
+      const playStoreURL = "https://play.google.com/store/apps/details?id=ch.noury";
+      const appStoreURL = "https://apps.apple.com/ch/app/noury/id1577361582";
+      const websiteURL = "https://www.noury.ch/app-herunterladen";
+      const userAgent = navigator.userAgent;
+
+      const isAndroid = () => /android/i.test(userAgent);
+      const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
+
+      let hasAppOpened = false;
+
+      const openApp = () => {
+        window.location.href = appScheme;
+
+         setTimeout(() => {
+          if (!hasAppOpened) {
+            if (isiOS()) {
+              window.location.href = appStoreURL;
+            } else if (isAndroid()) {
+              window.location.href = playStoreURL;
+            } else {
+              window.location.href = websiteURL;
+            }
+          }
+        }, 1500);
+      };
+      
+       openApp();
+      
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          hasAppOpened = true;
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -40,3 +91,4 @@
 </body>
 
 </html>
+ -->
