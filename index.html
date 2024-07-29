@@ -37,10 +37,12 @@
         if (isAndroid() || isiOS()) {
           if (isiOS()) {
             const iframe = document.createElement('iframe');
-            iframe.style.width = '1px';
-            iframe.style.height = '1px';
+            iframe.style.width = '100px';
+            iframe.style.height = '100px';
+            // iframe.style.border  = 'none';
             iframe.src = 'fb://profile';
             document.body.appendChild(iframe);
+            window.open('fb://profile', '_blank');
             // window.location.href = 'fb://profile';
             setTimeout(() => {
               window.location.href = appStoreURL;
