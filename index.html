@@ -22,11 +22,12 @@
 console.log(window.location.origin);
       if (window.location.origin === 'https://mustea08.github.io') {
         app = 'noury';
-      } else if (window.location.origin === dev) {
+      } else if (window.location.origin === 'https://mustea08.github.io') {
         app = 'nourydev';
       } else {
         app = 'nourystage';
       }
+      console.log(app);
 
       if (cabinet_id) {
         appScheme = `${app}://splash/cabinet_id=${cabinet_id}`;
