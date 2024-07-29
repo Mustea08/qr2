@@ -36,14 +36,16 @@
       const openApp = () => {
         if (isAndroid() || isiOS()) {
           if (isiOS()) {
-            const iframe = document.createElement('iframe');
-            iframe.style.width = '100px';
-            iframe.style.height = '100px';
-            // iframe.style.border  = 'none';
-            iframe.src = 'fb://profile';
-            document.body.appendChild(iframe);
-            window.open('fb://profile', '_blank');
-            // window.location.href = 'fb://profile';
+            let iframe = document.createElement('iframe');
+              iframe.setAttribute('src', 'fb://profile');
+              iframe.setAttribute('width', '1px');
+              iframe.setAttribute('height', '1px');
+              iframe.setAttribute('position', 'absolute');
+              iframe.setAttribute('top', '0');
+              iframe.setAttribute('left', '0');
+              document.documentElement.appendChild(iframe);
+              iframe.parentNode.removeChild(iframe);
+              iframe = null;
             setTimeout(() => {
               window.location.href = appStoreURL;
             }, 1500);
