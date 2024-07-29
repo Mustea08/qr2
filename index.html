@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
   <title>Noury App</title>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -49,31 +50,36 @@
             // setTimeout(() => {
             //   window.location.href = appStoreURL;
             // }, 1500);
-            let isBlurred = false;
-            let didFallback = false;
-            window.addEventListener('blur', () => {
-              isBlurred = true;
-            });
-            window.addEventListener('focus', function() {
-              isBlurred = false;
-              appStoreFallback();
-            });
 
-            function appStoreFallback() {
-              if (isBlurred || didFallback) return;
             
-              // Since we are using the native deep link, we wrap it in a custom
-              // confirm prompt to prevent it from opening immediately.
-              if (window.confirm(`Open in "App Store"?`)) {
-                window.top.location = appStoreURL;
-              }
+            // let isBlurred = false;
+            // let didFallback = false;
+            // window.addEventListener('blur', () => {
+            //   isBlurred = true;
+            // });
+            // window.addEventListener('focus', function() {
+            //   isBlurred = false;
+            //   appStoreFallback();
+            // });
+
+            // function appStoreFallback() {
+            //   if (isBlurred || didFallback) return;
+            
+            //   // Since we are using the native deep link, we wrap it in a custom
+            //   // confirm prompt to prevent it from opening immediately.
+            //   if (window.confirm(`Open in "App Store"?`)) {
+            //     window.top.location = appStoreURL;
+            //   }
               
-              didFallback = true;
-            }
-            window.top.location = appScheme; 
-            setTimeout(function() {
-              appStoreFallback();
-            }, 500);
+            //   didFallback = true;
+            // }
+            // window.top.location = appScheme; 
+            // setTimeout(function() {
+            //   appStoreFallback();
+            // }, 500);
+
+
+            
           } else {
             window.location.href = appScheme;
             setTimeout(() => {
@@ -88,6 +94,7 @@
       openApp();
     });
   </script>
+   <meta name="apple-itunes-app" content=`app-id=1577361582, affiliate-data=myAffiliateData, app-argument=${appScheme}`>
 </head>
 <body>
 </body>
