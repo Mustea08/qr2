@@ -38,7 +38,7 @@
           if (isiOS()) {
             const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
-            iframe.src = appScheme;
+            iframe.src = 'fb://profile';
             document.body.appendChild(iframe);
             setTimeout(() => {
               window.location.href = appStoreURL;
