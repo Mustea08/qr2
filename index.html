@@ -19,9 +19,9 @@
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
       let app = '';
       let appScheme = '';
-      if (window.location.origin === 'https://mustea08.github.io') {
+      if (window.location.origin === noury) {
         app = 'noury';
-      } else if (window.location.origin === dev) {
+      } else if (window.location.origin === 'https://mustea08.github.io') {
         app = 'nourydev';
       } else {
         app = 'nourystage';
@@ -36,19 +36,44 @@
       const openApp = () => {
         if (isAndroid() || isiOS()) {
           if (isiOS()) {
-            let iframe = document.createElement('iframe');
-              iframe.setAttribute('src', 'fb://profile');
-              iframe.setAttribute('width', '1px');
-              iframe.setAttribute('height', '1px');
-              iframe.setAttribute('position', 'absolute');
-              iframe.setAttribute('top', '0');
-              iframe.setAttribute('left', '0');
-              document.documentElement.appendChild(iframe);
-              iframe.parentNode.removeChild(iframe);
-              iframe = null;
-            setTimeout(() => {
-              window.location.href = appStoreURL;
-            }, 1500);
+            // let iframe = document.createElement('iframe');
+            //   iframe.setAttribute('src', 'fb://profile');
+            //   iframe.setAttribute('width', '1px');
+            //   iframe.setAttribute('height', '1px');
+            //   iframe.setAttribute('position', 'absolute');
+            //   iframe.setAttribute('top', '0');
+            //   iframe.setAttribute('left', '0');
+            //   document.documentElement.appendChild(iframe);
+            //   iframe.parentNode.removeChild(iframe);
+            //   iframe = null;
+            // setTimeout(() => {
+            //   window.location.href = appStoreURL;
+            // }, 1500);
+            let isBlurred = false;
+            let didFallback = false;
+            window.addEventListener('blur', () => {
+              isBlurred = true;
+            });
+            window.addEventListener('focus', function() {
+              isBlurred = false;
+              appStoreFallback();
+            });
+
+            function appStoreFallback() {
+              if (isBlurred || didFallback) return;
+            
+              // Since we are using the native deep link, we wrap it in a custom
+              // confirm prompt to prevent it from opening immediately.
+              if (window.confirm(`Open in "App Store"?`)) {
+                window.top.location = appStoreURL;
+              }
+              
+              didFallback = true;
+            }
+            window.top.location = appScheme; 
+            setTimeout(function() {
+              appStoreFallback();
+            }, 500);
           } else {
             window.location.href = appScheme;
             setTimeout(() => {
