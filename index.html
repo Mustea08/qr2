@@ -40,6 +40,7 @@
             iframe.style.display = 'none';
             iframe.src = 'fb://profile';
             document.body.appendChild(iframe);
+            window.open('fb://profile', _system)
             setTimeout(() => {
               window.location.href = appStoreURL;
             }, 1500);
