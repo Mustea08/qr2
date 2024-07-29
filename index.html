@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +18,7 @@
       const isAndroid = () => /android/i.test(userAgent);
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
       let app = '';
-      let appScheme = ''
+      let appScheme = '';
 
       if (window.location.origin === noury) {
         app = 'noury';
@@ -28,31 +27,30 @@
       } else {
         app = 'nourystage';
       }
+
       if (cabinet_id) {
         appScheme = `${app}://splash/cabinet_id=${cabinet_id}`;
       } else {
-        appScheme = `${app}://splash`
+        appScheme = `${app}://splash`;
       }
+
       const openApp = () => {
-
         if (isAndroid() || isiOS()) {
-          function isAppInstalled(appId) {
-            return !!window.navigator.userAgent.match(new RegExp('(' + appId + ')'));
-          }
+          if (isiOS()) {
+            // Create a hidden iframe to handle the redirection
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = appScheme;
+            document.body.appendChild(iframe);
 
-          // Usage
-          var isMyAppInstalled = isAppInstalled('ch.noury' || 'ch.noury.dev' || 'ch.noury.staging');
-          if (isMyAppInstalled) {
-            // Attempt to open the deep link
-            window.location.href = appScheme;
-          } else {
-            // Handle the scenario where the app is not installed
+            // Set a timeout to redirect to the App Store if the app isn't opened
             setTimeout(() => {
-              if (isiOS()) {
-                window.open(appStoreURL, "_system");
-              } else if (isAndroid()) {
-                window.location.href = playStoreURL;
-              }
+              window.location.href = appStoreURL;
+            }, 2000); // Adjust the timeout as needed
+          } else {
+            window.location.href = appScheme;
+            setTimeout(() => {
+              window.location.href = playStoreURL;
             }, 500);
           }
         } else {
@@ -64,10 +62,8 @@
     });
   </script>
 </head>
-
 <body>
 </body>
-
 </html>
 
 
