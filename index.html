@@ -19,7 +19,7 @@
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
       let app = '';
       let appScheme = '';
-
+console.log(window.location.origin);
       if (window.location.origin === 'https://mustea08.github.io') {
         app = 'noury';
       } else if (window.location.origin === dev) {
@@ -58,7 +58,7 @@
         }
       };
 
-      openApp();
+      // openApp();
     });
   </script>
 </head>
