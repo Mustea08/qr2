@@ -19,15 +19,13 @@
       const isiOS = () => /iPad|iPhone|iPod/.test(userAgent);
       let app = '';
       let appScheme = '';
-console.log(window.location.origin);
       if (window.location.origin === 'https://mustea08.github.io') {
         app = 'noury';
-      } else if (window.location.origin === 'https://mustea08.github.io') {
+      } else if (window.location.origin === dev) {
         app = 'nourydev';
       } else {
         app = 'nourystage';
       }
-      console.log(app);
 
       if (cabinet_id) {
         appScheme = `${app}://splash/cabinet_id=${cabinet_id}`;
@@ -38,16 +36,13 @@ console.log(window.location.origin);
       const openApp = () => {
         if (isAndroid() || isiOS()) {
           if (isiOS()) {
-            // Create a hidden iframe to handle the redirection
             const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
             iframe.src = appScheme;
             document.body.appendChild(iframe);
-
-            // Set a timeout to redirect to the App Store if the app isn't opened
             setTimeout(() => {
               window.location.href = appStoreURL;
-            }, 2000); // Adjust the timeout as needed
+            }, 1500);
           } else {
             window.location.href = appScheme;
             setTimeout(() => {
@@ -59,7 +54,7 @@ console.log(window.location.origin);
         }
       };
 
-      // openApp();
+      openApp();
     });
   </script>
 </head>
